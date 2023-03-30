@@ -6,11 +6,18 @@
 
                 <div *ngFor="let tempProduct of products" class="col-md-3">
                     <div class="product-box">
-                        <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
-                        <h1>{{ tempProduct.name }}</h1>
+
+                        <a routerLink="/products/{{ tempProduct.id }}">
+                            <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
+                        </a>
+
+                        <a routerLink="/products/{{ tempProduct.id }}">
+                            <h1>{{ tempProduct.name }}</h1>
+                        </a>
+
                     </div>
                     <div class="price">{{ tempProduct.unitPrice | currency: 'USD' }}</div>
-                    <a href="#" class="primary-btn">Add to cart</a>
+                    <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm">Add to cart</button>
                     <br/>
                     <br/>
                     <br/>
@@ -18,6 +25,52 @@
                 </div>
 
             </div>
+            <!-- If products empty then display a message -->
+
+
+            <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+                No products found.
+            </div>
+
+            <!-- begin footer -->
+            <div class="footer-pagination">
+                <div style="display: flex; flex-direction: row;">
+                    <div style="width: 100%;">
+                        <div style="width: 100%;">
+                            <div class="row">
+                                <div class="col-md-9" style="text-align:right">
+                                
+                                    <ngb-pagination [(page)]="thePageNumber"
+                                                    [pageSize]="thePageSize"
+                                                    [collectionSize]="theTotalElements"
+                                                    [maxSize]="5"
+                                                    [boundaryLinks]="true"
+                                                    (pageChange)="listProducts()"
+                                                    style="display: flex; justify-content: end;">
+
+                                    </ngb-pagination>
+
+                                </div>
+
+                                <div class="col-md-3 mt-2" style="text-align:center;">
+                                    <span class="mr-2">Page Size </span>
+                                    <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+                                        
+                                        <option selected="true" style="text-align:center;" >5</option>
+                                        <option>10</option>
+                                        <option>20</option>
+                                        <option>50</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- end footer -->
+
         </div>
     </div>
 </div>
